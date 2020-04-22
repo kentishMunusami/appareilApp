@@ -38,4 +38,8 @@ export class AppareilComponent implements OnInit {
     }
   }
 
+  delete() {
+    this.appareilService.deleteAppareil(this.id);
+  }
+
 }
