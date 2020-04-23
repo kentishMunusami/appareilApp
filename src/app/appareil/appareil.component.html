@@ -2,11 +2,36 @@
                 'list-group-item-success': appareilStatus === 'allumé',
                 'list-group-item-danger': appareilStatus === 'éteint'}">
 
-     <h4 [ngStyle]="{color: getColor()}">Appareil : {{ appareilName }} -- Statut : {{ getStatus() }}</h4>
-     <a [routerLink]="[id]">Détail</a>
+     <h4 [ngStyle]="{color: getColor()}">Appareil : {{ appareilName }} -- Statut : {{ getStatus() }} <span class="fa fa-edit" (click)="showFormulaire()"></span></h4>
+     <a [routerLink]="[id]" style="margin-right: 6px;">Détail</a>
 
      <button class="btn btn-sm btn-success" *ngIf="appareilStatus === 'éteint'" (click)="onSwitch()">Allumer</button>
      <button class="btn btn-sm btn-danger" *ngIf="appareilStatus === 'allumé'" (click)="onSwitch()">Eteindre</button>
+
+
+     <div class="row" *ngIf="modify">
+          <div class="col-sm-8 col-sm-offset-2">
+              <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+                  <div class="form-group">
+                      <label for="name">
+                          Nom de l'appareil
+                      </label>
+                      <input type="text" id="name" class="form-control" name="name"  [(ngModel)]="appareilName" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="status">
+                          État de l'appareil
+                      </label>
+                      <select id="status" class="form-control" name="status" [(ngModel)]="appareilStatus">
+                          <option value="allumé">Allumé</option>
+                          <option value="éteint">Éteint</option>
+                      </select>
+                  </div>
+                  <button class="btn btn-primary" type="submit" [disabled]="f.invalid">Enregistrer</button>
+              </form>
+          </div>
+      </div>
+      
      <span style="position:absolute; right:8px;top:8px;" class="fa fa-close" (click)="delete()"></span>
 
 </li>

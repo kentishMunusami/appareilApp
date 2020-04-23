@@ -1,6 +1,7 @@
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Appareil } from '../models/Appareil.model';
 
 @Injectable()
 export class AppareilService {
@@ -49,6 +50,18 @@ export class AppareilService {
     return appareil;
   }
 
+  updateAppareil(appareil: Appareil){
+    this.httpClient.put('http://localhost:8080/api/appareil', appareil).subscribe(
+      (response) => {
+        this.getAppareilsFromServer();
+        this.emitAppareilSubject();
+        
+      },
+      (error) => {
+        console.log('Erreur ! : ' + error);
+      });
+  }
+
   addAppareil(name: string, status: string) {
     const appareilObject = {
       name: '',
@@ -57,10 +70,10 @@ export class AppareilService {
     appareilObject.name = name;
     appareilObject.status = status;
     
-    this.httpClient.post('http://localhost:8080/api/appareil/new', appareilObject).subscribe(
+    this.httpClient.post('http://localhost:8080/api/appareil', appareilObject).subscribe(
       (response) => {
         console.log(response);
-        
+        this.getAppareilsFromServer();
         this.emitAppareilSubject();
         
       },

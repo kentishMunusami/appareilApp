@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AppareilService } from '../services/appareil.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-appareil',
@@ -12,6 +13,7 @@ export class AppareilComponent implements OnInit {
   @Input() appareilStatus: string;
   @Input() index: number;
   @Input() id: number;
+  private modify: boolean;
 
   constructor(private appareilService: AppareilService) { }
 
@@ -40,6 +42,29 @@ export class AppareilComponent implements OnInit {
 
   delete() {
     this.appareilService.deleteAppareil(this.id);
+  }
+
+  onSubmit(form: NgForm) {
+    const updateAppareil = {
+      id: this.id, 
+      name: form.value['name'],
+      status: form.value['status']
+    };
+    this.appareilService.updateAppareil(updateAppareil)
+    this.showFormulaire();
+    
+    
+  //   appareilObject.name = name;
+  //   appareilObject.status = status;
+  //   const name = form.value['name'];
+  //   const status = form.value['status'];
+  //   this.appareilService.addAppareil(name, status);
+  //   this.router.navigate(['/appareils']);
+  }
+
+
+  showFormulaire(){
+    this.modify = !this.modify;
   }
 
 }
