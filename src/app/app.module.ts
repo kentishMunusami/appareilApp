@@ -19,6 +19,10 @@ import { UserService } from './services/user.service';
 import { UserListComponent } from './user-list/user-list.component';
 import { NewUserComponent } from './new-user/new-user.component';
 import { HttpClientModule } from '@angular/common/http';
+import {MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatGridListModule, MatInputModule} from '@angular/material';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { JwtModule } from '@auth0/angular-jwt';
+
 
 const appRoutes: Routes = [
   { path: 'appareils', canActivate: [AuthGuard], component: AppareilViewComponent },
@@ -48,9 +52,29 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    MatGridListModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: AuthService.getToken,
+        whitelistedDomains: [
+          "localhost:8080",
+          "127.0.0.1:8080",
+          "http://192.168.150.100/pu",
+          "172.17.0.1:8080",
+          "https://pu-espace-volontaire.capfi.fr"
+        ],
+        skipWhenExpired: true,
+        authScheme: ""
+      }
+    }),
 ],
   providers: [AppareilService, AuthService, AuthGuard, UserService],
   bootstrap: [AppComponent]

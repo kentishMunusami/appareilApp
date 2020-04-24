@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-auth',
@@ -10,26 +12,42 @@ import { Router } from '@angular/router';
 export class AuthComponent implements OnInit {
 
   authStatus: boolean;
+  loginForm: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder,) { }
 
   ngOnInit() {
-    this.authStatus = this.authService.isAuth;
+    this.loginForm = this.formBuilder.group({
+      email:    [null, [Validators.required, Validators.email]],
+      password: [null, [Validators.required, Validators.minLength(3)]],
+    });
   }
 
-  onSignIn() {
-    this.authService.signIn().then(
-      () => {
-        console.log('Sign in successful!');
-        this.authStatus = this.authService.isAuth;
-        this.router.navigate(['appareils']);
-      }
-    );
+  connect() {
+    if (this.loginForm.valid) {
+      this.authService.authenticate(this.loginForm.get('email').value, this.loginForm.get('password').value).subscribe((response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            this.authService.isAuth = true;
+            this.authService.handleSuccess(response.headers);
+            this.router.navigate(['appareils']);
+          }
+        });
+    }
   }
 
-  onSignOut() {
-    this.authService.signOut();
-    this.authStatus = this.authService.isAuth;
-  }
+  // onSignIn() {
+  //   this.authService.signIn().then(
+  //     () => {
+  //       console.log('Sign in successful!');
+  //       this.authStatus = this.authService.isAuth;
+  //       this.router.navigate(['appareils']);
+  //     }
+  //   );
+  // }
+
+  // onSignOut() {
+  //   this.authService.signOut();
+  //   this.authStatus = this.authService.isAuth;
+  // }
 
 }

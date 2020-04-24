@@ -1,3 +1,41 @@
-<h2>Authentification</h2>
-<button class="btn btn-success" *ngIf="!authStatus" (click)="onSignIn()">Se connecter</button>
-<button class="btn btn-danger" *ngIf="authStatus" (click)="onSignOut()">Se déconnecter</button>
+<mat-grid-list cols="1" rowHeight="60px" >
+    <mat-grid-tile>
+      <h1 *ngIf="!passwordIsLost">Veuillez vous connecter</h1>
+      <h1 *ngIf="passwordIsLost">Veuillez entrer votre email</h1>
+    </mat-grid-tile>
+    <form nz-form [formGroup]="loginForm" (ngSubmit)="connect()" #form>
+      <mat-grid-tile >
+        <mat-form-field>
+          <input matInput placeholder="Email" formControlName="email"
+                 [errorStateMatcher]="matcher">
+          <!--<mat-hint>add hint</mat-hint>-->
+          <mat-error *ngIf="loginForm.get('email').hasError('email') && !loginForm.get('email').hasError('required')">
+            Please enter a valid email address
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('email').hasError('required')">
+            Email is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile *ngIf="!passwordIsLost">
+        <mat-form-field>
+          <input matInput placeholder="Mot de passe" type="password" formControlName="password" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="loginForm.get('password').hasError('required')">
+            Password is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile *ngIf="!passwordIsLost">
+        <mat-checkbox>Se souvenir de moi</mat-checkbox>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <button mat-raised-button color="warn" class="buttonStyle" name="connecter" type="submit" *ngIf="!passwordIsLost">Se connecter</button>
+        <button mat-raised-button color="warn" class="buttonStyle" type="button" *ngIf="passwordIsLost" (click)="requestPasswordReset()">Réinitialiser</button>
+      </mat-grid-tile>
+    </form>
+    <mat-grid-tile (click)="switchLoginOrPasswordLostPage()">
+      <button class="link"  style="font-size: 0.9em; color:blue;" *ngIf="!passwordIsLost"><strong>Mot de passe oublié ?</strong></button>
+      <button class="link"  style="font-size: 0.9em; color:blue;" *ngIf="passwordIsLost"><strong>Retour à la page de connexion</strong></button>
+    </mat-grid-tile>
+  </mat-grid-list>
+  

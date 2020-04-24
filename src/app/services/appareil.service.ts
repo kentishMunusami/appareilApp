@@ -1,6 +1,7 @@
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Appareil } from '../models/Appareil.model';
 
 @Injectable()
 export class AppareilService {
@@ -29,8 +30,6 @@ export class AppareilService {
   constructor(private httpClient: HttpClient) { }
 
   emitAppareilSubject() {
-    console.log(this.appareils);
-    
     this.appareilsSubject.next(this.appareils.slice());
   }
 
@@ -51,16 +50,38 @@ export class AppareilService {
     return appareil;
   }
 
+  updateAppareil(appareil: Appareil){
+    this.httpClient.put('http://localhost:8080/appareil', appareil).subscribe(
+      (response) => {
+        this.getAppareilsFromServer();
+        this.emitAppareilSubject();
+        
+      },
+      (error) => {
+        console.log('Erreur ! : ' + error);
+      });
+  }
+
   addAppareil(name: string, status: string) {
     const appareilObject = {
-      id: 0,
       name: '',
       status: ''
     };
     appareilObject.name = name;
     appareilObject.status = status;
-    appareilObject.id = this.appareils[(this.appareils.length - 1)].id + 1;
-    this.appareils.push(appareilObject);
+    
+    this.httpClient.post('http://localhost:8080/appareil', appareilObject).subscribe(
+      (response) => {
+        console.log(response);
+        this.getAppareilsFromServer();
+        this.emitAppareilSubject();
+        
+      },
+      (error) => {
+        console.log('Erreur ! : ' + error);
+      });
+    // appareilObject.id = this.appareils[(this.appareils.length - 1)].id + 1;
+    // this.appareils.push(appareilObject);
     this.emitAppareilSubject();
   }
 
@@ -77,19 +98,46 @@ export class AppareilService {
       );
   }
 
-  getAppareilsFromServer() {
-    this.httpClient
-      .get<any[]>('https://appareil-fd3ed.firebaseio.com/appareils.json')
-      .subscribe(
+  deleteAppareil(id: number) {
+
+    this.httpClient.delete<any[]>(`http://localhost:8080/appareil/${id}`).subscribe(
         (response) => {
-          this.appareils = response['-M35gb8khcHQl4S0Fdsb'];
-          
+          this.appareils = response;
           this.emitAppareilSubject();
         },
         (error) => {
           console.log('Erreur ! : ' + error);
         }
       );
+    }
+
+  getAppareilsFromServer() {
+    this.httpClient
+      .get<any[]>('http://localhost:8080/appareil/all')
+      .subscribe(
+        (response) => {
+          this.appareils = response;
+          this.emitAppareilSubject();
+          
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
+
+
+    // this.httpClient
+    //   .get<any[]>('https://appareil-fd3ed.firebaseio.com/appareils.json')
+    //   .subscribe(
+    //     (response) => {
+          
+    //       this.appareils = response['-M35gb8khcHQl4S0Fdsb'];
+    //       this.emitAppareilSubject();
+    //     },
+    //     (error) => {
+    //       console.log('Erreur ! : ' + error);
+    //     }
+    //   );
   }
 
 }
