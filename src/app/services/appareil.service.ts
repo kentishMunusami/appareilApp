@@ -51,7 +51,7 @@ export class AppareilService {
   }
 
   updateAppareil(appareil: Appareil){
-    this.httpClient.put('http://localhost:8080/api/appareil', appareil).subscribe(
+    this.httpClient.put('http://localhost:8080/appareil', appareil).subscribe(
       (response) => {
         this.getAppareilsFromServer();
         this.emitAppareilSubject();
@@ -70,7 +70,7 @@ export class AppareilService {
     appareilObject.name = name;
     appareilObject.status = status;
     
-    this.httpClient.post('http://localhost:8080/api/appareil', appareilObject).subscribe(
+    this.httpClient.post('http://localhost:8080/appareil', appareilObject).subscribe(
       (response) => {
         console.log(response);
         this.getAppareilsFromServer();
@@ -100,7 +100,7 @@ export class AppareilService {
 
   deleteAppareil(id: number) {
 
-    this.httpClient.delete<any[]>(`http://localhost:8080/api/appareil/${id}`).subscribe(
+    this.httpClient.delete<any[]>(`http://localhost:8080/appareil/${id}`).subscribe(
         (response) => {
           this.appareils = response;
           this.emitAppareilSubject();
@@ -113,7 +113,7 @@ export class AppareilService {
 
   getAppareilsFromServer() {
     this.httpClient
-      .get<any[]>('http://localhost:8080/api/appareil/all')
+      .get<any[]>('http://localhost:8080/appareil/all')
       .subscribe(
         (response) => {
           this.appareils = response;
