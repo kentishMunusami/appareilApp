@@ -3,6 +3,8 @@ import { AppareilService } from './services/appareil.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { interval } from 'rxjs';
 import { Subscription } from 'rxjs';
+import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +16,7 @@ export class AppComponent implements OnInit {
   secondes: number;
   counterSubscription: Subscription;
   subjectSubscription: Subscription;
+
 
   lastUpdate = new Promise((resolve, reject) => {
     const date = new Date();
@@ -32,14 +35,17 @@ export class AppComponent implements OnInit {
 
 
 
-  constructor(private appareilService: AppareilService) {
-    setTimeout(
-      () => {
-        this.isAuth = true;
-      }, 4000
-    );
+  constructor(private appareilService: AppareilService, private authService: AuthService, private router: Router) {
   }
   
+  isAuthenficated(){
+    return this.authService.isAuthenticated();
+  }
+
+  logOut(){
+    this.authService.logOut();
+    this.router.navigate(['/auth']);
+  }
 
   ngOnInit() {
     // const counter = interval(1000);
