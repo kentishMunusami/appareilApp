@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpResponse } from '@angular/common/http';
+import { Observable, interval } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
@@ -13,6 +14,7 @@ export class AuthComponent implements OnInit {
 
   authStatus: boolean;
   loginForm: FormGroup;
+  notAllow: boolean;
 
   constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder,) { }
 
@@ -26,11 +28,19 @@ export class AuthComponent implements OnInit {
   connect() {
     if (this.loginForm.valid) {
       this.authService.authenticate(this.loginForm.get('email').value, this.loginForm.get('password').value).subscribe((response: HttpResponse<any>) => {
+        console.log(response.status);
+        
           if (response.status === 200) {
             this.authService.isAuth = true;
             this.authService.handleSuccess(response.headers);
             this.router.navigate(['appareils']);
           }
+        }
+        ,(err) => {
+          this.notAllow = true;
+            setTimeout(function() {
+              this.notAllow = false;
+          }.bind(this), 3000);
         });
     }
   }

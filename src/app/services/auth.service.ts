@@ -10,6 +10,8 @@ export const TOKEN_KEY = 'PU_AUTH_TOKEN';
 export class AuthService {
 
     isAuth = false;
+    
+
 
   constructor(
     private jwtHelperService: JwtHelperService,

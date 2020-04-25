@@ -2,13 +2,13 @@
   <div class="container-fluid">
     <div class="navbar-collapse">
       <ul class="nav navbar-nav">
-        <li routerLinkActive="active"><a routerLink="auth">Authentification</a></li>
-        <li routerLinkActive="active"><a routerLink="appareils">Appareils</a></li>
-        <li routerLinkActive="active"><a routerLink="edit">Nouvel appareil</a></li>
-        <li routerLinkActive="active"><a routerLink="users">Utilisateurs</a></li>
+        <li routerLinkActive="active" *ngIf="!isAuthenficated()"><a routerLink="auth">Authentification</a></li>
+        <li routerLinkActive="active" *ngIf="isAuthenficated()"><a routerLink="appareils">Appareils</a></li>
+        <li routerLinkActive="active" *ngIf="isAuthenficated()"><a routerLink="edit">Nouvel appareil</a></li>
+        <li routerLinkActive="active" *ngIf="isAuthenficated()"><a routerLink="users">Utilisateurs</a></li>
       </ul>
       <div class="navbar-right">
-        <p>Vous êtes connecté depuis {{ secondes }} secondes !</p>
+        <button mat-raised-button color="warn" class="buttonStyle" type="button" *ngIf="isAuthenficated()" (click)="logOut()">Déconnexion</button>
       </div>
     </div>
   </div>
