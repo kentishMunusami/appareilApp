@@ -56,7 +56,7 @@ export class AppareilService {
     this.httpClient.post('http://localhost:8080/appareil', appareilObject).subscribe(
       (response) => {
         console.log(response);
-        this.getAppareilsFromServer();
+        // this.getAppareilsFromServer();
         this.emitAppareilSubject();
         
       },
