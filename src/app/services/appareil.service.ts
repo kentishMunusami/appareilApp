@@ -94,9 +94,12 @@ export class AppareilService {
       );
     }
 
+    getAppareils(){
+      return this.httpClient.get<any[]>('http://localhost:8080/appareil/all');
+    }
+
   getAppareilsFromServer() {
-    this.httpClient
-      .get<any[]>('http://localhost:8080/appareil/all')
+    this.getAppareils()
       .subscribe(
         (response) => {
           this.appareils = response;
