@@ -22,6 +22,9 @@ import { HttpClientModule } from '@angular/common/http';
 import {MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatGridListModule, MatInputModule} from '@angular/material';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { JwtModule } from '@auth0/angular-jwt';
+import { ArticleComponent } from './article/article.component';
+import { ArticleService } from './services/article.service';
+import { ArticleContentComponent } from './article-content/article-content.component';
 
 
 const appRoutes: Routes = [
@@ -30,6 +33,7 @@ const appRoutes: Routes = [
   { path: 'edit', canActivate: [AuthGuard], component: EditAppareilComponent },
   { path: 'auth', component: AuthComponent },
   { path: 'users', component: UserListComponent },
+  { path: 'articles', component: ArticleComponent },
   { path: 'new-user', component: NewUserComponent },
   { path: '', component: AppareilViewComponent },
   { path: 'not-found', component: FourOhFourComponent },
@@ -47,7 +51,9 @@ const appRoutes: Routes = [
     FourOhFourComponent,
     EditAppareilComponent,
     UserListComponent,
-    NewUserComponent
+    NewUserComponent,
+    ArticleComponent,
+    ArticleContentComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +82,7 @@ const appRoutes: Routes = [
       }
     }),
 ],
-  providers: [AppareilService, AuthService, AuthGuard, UserService],
+  providers: [AppareilService, AuthService, AuthGuard, UserService, ArticleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

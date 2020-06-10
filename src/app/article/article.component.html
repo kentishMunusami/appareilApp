@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Dernières news</h2>
+            <ul class="list-group">
+                <app-article-content *ngFor="let article of articles" [title]="article.title"></app-article-content>
+                <!-- <span *ngFor="let article of articles">
+                    <li>{{article.content}}</li>
+                </span>
+                
+                <app-appareil *ngFor="let appareil of appareils; let i = index" [appareilName]="appareil.name"
+                    [appareilStatus]="appareil.status" [index]="i" [id]="appareil.id"></app-appareil> -->
+                
+            </ul>
+            <!-- <button class="btn btn-primary" (click)="onSave()">Enregistrer les appareils</button>
+            <button class="btn btn-primary" (click)="onFetch()">Récupérer les appareils</button> -->
+            <!-- <button class="btn btn-success" [disabled]="!isAuth" (click)="onAllumer()">Tout allumer</button>
+          <button class="btn btn-danger" [disabled]="!isAuth" (click)="onEteindre()">Tout éteindre</button> -->
+        </div>
+    </div>
+</div>

@@ -6,6 +6,7 @@
         <li routerLinkActive="active" *ngIf="isAuthenficated()"><a routerLink="appareils">Appareils</a></li>
         <li routerLinkActive="active" *ngIf="isAuthenficated()"><a routerLink="edit">Nouvel appareil</a></li>
         <li routerLinkActive="active" *ngIf="isAuthenficated()"><a routerLink="users">Utilisateurs</a></li>
+        <li routerLinkActive="active" *ngIf="isAuthenficated()"><a routerLink="articles">News</a></li>
       </ul>
       <div class="navbar-right">
         <button mat-raised-button color="warn" class="buttonStyle" type="button" *ngIf="isAuthenficated()" (click)="logOut()">Déconnexion</button>
